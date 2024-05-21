@@ -2,11 +2,13 @@
 <h1>Edit Blog</h1>
 <form action="/edit/<%= postId %>" method="post">
   <div class="form-group">
-    <label>Title</label>
+    <label class="labelClass">Title</label>
     <input class="form-control" type="text" name="postTitle" value="<%= title %>">
-    <label>Post</label>
+    <label class="labelClass">Post</label>
     <textarea class="form-control" name="postBody" rows="5" cols="30"><%= content %></textarea>
+    <label class="labelClass">Author Name</label>
+    <input class="form-control" type="text" name="authorName" value="<%= author %>">
   </div>
-  <button class="btn btn-primary" type="submit" name="button">Edit</button>
+  <button class="btn btn-primary" type="submit" name="button">Update</button>
 </form>
 <%- include("partials/footer"); -%>

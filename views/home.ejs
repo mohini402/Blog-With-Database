@@ -1,20 +1,28 @@
-
 <%- include("partials/header"); -%>
-    <h1>Home</h1>
-    <p> <%= startingContent %> </p>
-    <a href="/compose" class="btn btn-primary">Compose New Post</a>
 
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <a href="/compose" class="btn btn-primary mb-4">Compose New Post</a>
+    </div>
+  </div>
 
-  <%  posts.forEach(function(post){ %>
-
-    <h1><%=post.title%></h1>
-    <p>
-    <%=post.content.substring(0, 100) + " ..."%>
-    <a href="/posts/<%=post._id%>">Read More</a>
-    </p>
-
-
+  <div class="row">
+    <% posts.forEach(function(post){ %>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"><%= post.title %></h5>
+            <p class="card-text">
+              <%= post.content.substring(0, 100) + " ..." %>
+              <a href="/posts/<%= post._id %>" class="stretched-link">Read More</a>
+            </p>
+            <p class="card-text text-muted">Author: <%= post.author %></p>
+          </div>
+        </div>
+      </div>
     <% }) %>
-
+  </div>
+</div>
 
 <%- include("partials/footer"); -%>

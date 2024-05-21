@@ -7,10 +7,8 @@ const mongoose = require("mongoose");
 require ("dotenv").config();
 const _ = require("lodash");
 
-const homeStartingContent =
-  "In this digital space, you'll find a diverse range of content, from personal reflections and life experiences to thought-provoking articles and informative guides. The goal is to create a community where we can engage in meaningful discussions, learn from each other, and grow together.";
 const aboutContent =
-  "Your presence here means a lot. By joining this blog, you're not just a reader; you're a part of a community that values learning, sharing, and growing together. Subscribe to stay updated with the latest posts, and don't forget to follow us on social media for more updates and interactions.";
+"In this digital space, you'll find a diverse range of content, from personal reflections and life experiences to thought-provoking articles and informative guides. The goal is to create a community where we can engage in meaningful discussions, learn from each other, and grow together.";
 const contactContent =
   "My email id : mohiniagarwal1408@gmail.com";
 
@@ -30,6 +28,7 @@ mongoose.connect(`mongodb+srv://${process.env.EMAIL}:${process.env.PASSWORD}@clu
 const postSchema = {
   title: String,
   content: String,
+  author:String
 };
 
 const Post = mongoose.model("Post", postSchema);
@@ -42,7 +41,6 @@ app.get("/", function (req, res) {
   Post.find({})
   .then(function(posts){
     res.render("home", {
-      startingContent: homeStartingContent,
       posts: posts
       });
   });
@@ -60,9 +58,6 @@ app.get("/compose", function (req, res) {
   res.render("compose");
 });
 
-app.get("/delete",function(req,res){
-  res.render("delete");
-});
 
 app.get("/edit/:postId", function (req, res) {
   const requestedPostId = req.params.postId;
@@ -71,7 +66,8 @@ app.get("/edit/:postId", function (req, res) {
       res.render("edit", {
         postId: post._id,
         title: post.title,
-        content: post.content
+        content: post.content,
+        author :post.author
       });
     } else {
       res.send("Post not found");
@@ -86,7 +82,8 @@ app.post("/edit/:postId", function (req, res) {
   const postId = req.params.postId;
   Post.findByIdAndUpdate(postId, {
     title: req.body.postTitle,
-    content: req.body.postBody
+    content: req.body.postBody,
+    author: req.body.authorName
   }).then(() => {
     console.log("Post updated successfully!");
     res.redirect("/posts/" + postId);
@@ -100,6 +97,7 @@ app.post("/compose", function (req, res) {
   const post = new Post({
     title: req.body.postTitle,
     content: req.body.postBody,
+    author: req.body.authorName
   });
 
   post.save().then(()=>{
@@ -114,7 +112,8 @@ app.get("/posts/:postId", function (req, res) {
     res.render("post", {
       postId: post._id,
       title: post.title,
-      content: post.content
+      content: post.content,
+      author: post.author
     });
   }).catch(function (err) {
     console.log(err);
@@ -122,14 +121,19 @@ app.get("/posts/:postId", function (req, res) {
   });
 });
 
-app.post("/delete",function(req,res){
-  const deleteBlog=req.body.postTitle;
-  Post.deleteOne({title:deleteBlog})
-  .then(()=>{
-    console.log("Blog deleted successfully!");
-    res.redirect("/");
-  })
+app.post("/delete/:postId", function (req, res) {
+  const postId = req.params.postId;
+  Post.findByIdAndRemove(postId)
+    .then(() => {
+      console.log("Blog deleted successfully!");
+      res.redirect("/");
+    })
+    .catch(err => {
+      console.log(err);
+      res.send("Error occurred");
+    });
 });
+
 
   //const requestedTitle = _.lowerCase(req.params.postName);
 

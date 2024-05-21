@@ -1,9 +1,28 @@
 <%- include("partials/header"); -%>
 
-  <h1><%=title%></h1>
-  <p><%=content%></p>
-
-  <a href="/delete" class="btn btn-danger">Delete Blog</a>
-  <a href="/edit/<%= postId %>" class="btn btn-success">Edit Blog</a>
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="card-title"><%= title %></h1>
+        </div>
+        <div class="card-body">
+          <h3>Content</h3>
+          <p class="card-text"><%= content %></p>
+          
+          <h3>Author</h3>
+          <p class="card-text"><%= author %></p>
+        </div>
+        <div class="card-footer text-end">
+          <form action="/delete/<%= postId %>" method="post" style="display:inline;">
+            <button class="btn btn-danger" type="submit">Delete Blog</button>
+          </form>
+          <a href="/edit/<%= postId %>" class="btn btn-success">Edit Blog</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <%- include("partials/footer"); -%>
