@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 
-mongoose.connect(`mongodb+srv://mohiniagarwal1408:${process.env.PASSWORD}@cluster0.xu5sddz.mongodb.net/blogDB`).then(() => {
+mongoose.connect(`mongodb+srv://${process.env.EMAIL}:${process.env.PASSWORD}@cluster0.xu5sddz.mongodb.net/${process.env.DATABASE}`).then(() => {
   console.log("connected");
 });
 
